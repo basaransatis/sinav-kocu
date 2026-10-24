@@ -1,0 +1,21 @@
+
+{
+  "id": "./",
+  "name": "Sınav Koçu - TYT AYT",
+  "short_name": "Sınav Koçu",
+  "description": "TYT ve AYT çalışma planı ve konu takip uygulaması",
+  "lang": "tr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f5fb",
+  "theme_color": "#6750d8",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
