@@ -28,9 +28,12 @@ data.tasks ||= [];
 data.topics ||= {};
 data.daily ||= {};
 let selectedExam = "TYT";
+
 let seconds = 25 * 60;
+let sessionSeconds = 25 * 60;
 let running = false;
 let timerId = null;
+
 
 function save() {
   localStorage.setItem(KEY, JSON.stringify(data));
