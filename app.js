@@ -189,11 +189,21 @@ document.querySelectorAll(".filter").forEach(button => {
   });
 });
 
+
+function formatTime(total) {
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+
+  if (h > 0) {
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+
+  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+}
+
 function showTimer() {
-  const min = Math.floor(seconds / 60);
-  const sec = seconds % 60;
-  $("timer").textContent =
-    `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+  $("timer").textContent = formatTime(seconds);
 }
 
 function stopTimer() {
@@ -203,29 +213,96 @@ function stopTimer() {
   $("startTimer").textContent = "Başlat";
 }
 
-$("startTimer").addEventListener("click", () => {
+function selectedDuration() {
+  const hours = Number($("durationHours").value);
+  const minutes = Number($("durationMinutes").value);
+
+  if (
+    $("durationHours").value.trim() === "" ||
+    $("durationMinutes").value.trim() === "" ||
+    !Number.isInteger(hours) ||
+    !Number.isInteger(minutes) ||
+    hours < 0 || hours > 24 ||
+    minutes < 0 || minutes > 59
+  ) {
+    return 0;
+  }
+
+  const total = hours * 60 + minutes;
+  return total > 0 && total <= 1440 ? total : 0;
+}
+
+function setDuration(totalMinutes) {
   if (running) {
-    stopTimer();
+    $("timerStatus").textContent = "Önce sayacı duraklat.";
     return;
   }
 
-  if (seconds <= 0) seconds = 25 * 60;
+  if (!Number.isInteger(totalMinutes) ||
+      totalMinutes < 1 || totalMinutes > 1440) {
+    $("timerStatus").textContent = "1 dakika ile 24 saat arasında bir süre seç.";
+    return;
+  }
+
+  $("durationHours").value = Math.floor(totalMinutes / 60);
+  $("durationMinutes").value = totalMinutes % 60;
+
+  sessionSeconds = totalMinutes * 60;
+  seconds = sessionSeconds;
+  showTimer();
+
+  $("timerStatus").textContent =
+    `${totalMinutes >= 60
+      ? `${Math.floor(totalMinutes / 60)} saat ${totalMinutes % 60} dakika`
+      : `${totalMinutes} dakika`} çalışma`;
+
+  $("startTimer").textContent = "Başlat";
+}
+
+$("setDuration").addEventListener("click", () => {
+  const minutes = selectedDuration();
+
+  if (!minutes) {
+    $("timerStatus").textContent = "Geçerli bir süre gir.";
+    return;
+  }
+
+  setDuration(minutes);
+});
+
+document.querySelectorAll(".preset").forEach(button => {
+  button.addEventListener("click", () => {
+    setDuration(Number(button.dataset.minutes));
+  });
+});
+
+$("startTimer").addEventListener("click", () => {
+  if (running) {
+    stopTimer();
+    $("timerStatus").textContent = "Sayaç duraklatıldı.";
+    return;
+  }
+
+  if (seconds <= 0) seconds = sessionSeconds;
+
   running = true;
   $("startTimer").textContent = "Duraklat";
   $("timerStatus").textContent = "Odaklanıyorsun. Devam et!";
 
   timerId = setInterval(() => {
-    seconds--;
+    seconds = Math.max(0, seconds - 1);
     showTimer();
 
-    if (seconds <= 0) {
+    if (seconds === 0) {
       stopTimer();
-      todayData().minutes += 25;
+
+      todayData().minutes += Math.ceil(sessionSeconds / 60);
       save();
       renderStats();
-      $("timerStatus").textContent = "Oturum tamamlandı! 25 dakika kaydedildi.";
-      seconds = 25 * 60;
-      showTimer();
+
+      $("timerStatus").textContent =
+        "Oturum tamamlandı! Çalışma süren kaydedildi.";
+
       $("startTimer").textContent = "Yeniden başlat";
     }
   }, 1000);
@@ -233,10 +310,13 @@ $("startTimer").addEventListener("click", () => {
 
 $("resetTimer").addEventListener("click", () => {
   stopTimer();
-  seconds = 25 * 60;
+  seconds = sessionSeconds;
   showTimer();
-  $("timerStatus").textContent = "25 dakika çalışma";
+  $("timerStatus").textContent = "Sayaç sıfırlandı.";
 });
+
+setDuration(25);
+
 
 const dateText = new Intl.DateTimeFormat("tr-TR", {
   weekday: "long", day: "numeric", month: "long"
