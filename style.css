@@ -249,3 +249,87 @@ footer { text-align: center; color: var(--muted); padding: 35px 0 10px; font-siz
   main { padding-top: 28px; }
   .welcome { padding-top: 20px; }
 }
+.countdown-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.countdown-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.exam-label {
+  color: var(--accent);
+  font-weight: 850;
+  letter-spacing: 1px;
+}
+
+.countdown-card strong {
+  font-size: clamp(20px, 5vw, 29px);
+  overflow-wrap: anywhere;
+}
+
+.countdown-card small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.countdown-card input {
+  width: 100%;
+  padding: 9px 5px;
+  font-size: 12px;
+}
+
+.duration-settings {
+  display: grid;
+  grid-template-columns: auto minmax(55px, 1fr) auto minmax(55px, 1fr);
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.duration-settings input {
+  text-align: center;
+  padding: 10px 4px;
+}
+
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px;
+  margin: 14px 0 10px;
+}
+
+.presets button {
+  padding: 9px 11px;
+  font-size: 12px;
+}
+
+#setDuration {
+  width: 100%;
+}
+
+.countdown-section {
+  margin-top: 5px;
+}
+
+@media (max-width: 360px) {
+  .countdown-grid {
+    gap: 8px;
+  }
+
+  .countdown-card {
+    padding: 12px;
+  }
+
+  .duration-settings {
+    gap: 5px;
+  }
+}
