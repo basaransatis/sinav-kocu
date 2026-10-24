@@ -1,0 +1,96 @@
+
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#6750d8">
+  <meta name="description" content="TYT ve AYT çalışma planını, konularını ve odak süreni takip et.">
+  <title>Sınav Koçu</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./">
+      <span class="brand-icon">S</span>
+      <span>Sınav Koçu<small>KENDİ HEDEFİNİ BELİRLE</small></span>
+    </a>
+    <button id="themeBtn" class="icon-btn" aria-label="Temayı değiştir">☀️</button>
+  </header>
+
+  <main>
+    <section class="welcome">
+      <p class="eyebrow" id="today"></p>
+      <h1>Bugün de bir adım<br>ileri. <span>🚀</span></h1>
+      <p class="muted">Küçük adımlar, büyük sonuçlar.</p>
+    </section>
+
+    <section class="stats">
+      <article class="card stat">
+        <span>Günlük görevler</span>
+        <strong id="taskCount">0/0</strong>
+        <div class="progress"><div id="taskBar"></div></div>
+      </article>
+      <article class="card stat">
+        <span>Çalışma süresi</span>
+        <strong id="studyTotal">0 dk</strong>
+        <small>Bugünkü toplam</small>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <h2>Günün planı</h2>
+        <span class="tag">BUGÜN</span>
+      </div>
+      <form id="taskForm" class="add-form">
+        <input id="taskInput" maxlength="100"
+          placeholder="Örn. TYT matematik problemler" required>
+        <button class="primary-btn" type="submit">Ekle +</button>
+      </form>
+      <div id="taskList" class="task-list"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <h2>Konu takibi</h2>
+        <span class="muted">TYT / AYT</span>
+      </div>
+      <div class="filters">
+        <button class="filter active" data-exam="TYT">TYT</button>
+        <button class="filter" data-exam="AYT">AYT</button>
+      </div>
+      <div id="topicList" class="topic-list"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <h2>Odaklanma zamanı</h2>
+        <span class="tag">POMODORO</span>
+      </div>
+      <article class="card timer-card">
+        <p class="muted">Şimdi sadece tek bir işe odaklan.</p>
+        <div id="timer" class="timer">25:00</div>
+        <div class="timer-controls">
+          <button id="startTimer" class="primary-btn">Başlat</button>
+          <button id="resetTimer" class="secondary-btn">Sıfırla</button>
+        </div>
+        <small id="timerStatus" class="muted">25 dakika çalışma</small>
+      </article>
+    </section>
+
+    <footer>Her gün biraz daha ileri. ✨</footer>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="#today" class="nav-item selected">⌂<span>Bugün</span></a>
+    <a href="#taskForm" class="nav-item">✓<span>Plan</span></a>
+    <a href="#topicList" class="nav-item">▤<span>Konular</span></a>
+    <a href="#timer" class="nav-item">◷<span>Odak</span></a>
+  </nav>
+
+  <script src="./app.js"></script>
+</body>
+</html>
