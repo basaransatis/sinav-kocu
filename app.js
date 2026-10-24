@@ -317,6 +317,99 @@ $("resetTimer").addEventListener("click", () => {
 
 setDuration(25);
 
+const EXAM_DATES_KEY = "sinavKocu.examDates.v1";
+
+let examDates = {};
+try {
+  examDates = JSON.parse(
+    localStorage.getItem(EXAM_DATES_KEY) || "{}"
+  );
+} catch {
+  examDates = {};
+}
+
+function renderCountdown(exam) {
+  const input = $(`${exam.toLowerCase()}DateInput`);
+  const daysLabel = $(`${exam.toLowerCase()}Days`);
+  const dateLabel = $(`${exam.toLowerCase()}Date`);
+  const value = examDates[exam];
+
+  input.value = value || "";
+
+  if (!value) {
+    daysLabel.textContent = "Tarih seç";
+    dateLabel.textContent = "Sınav tarihini belirle";
+    return;
+  }
+
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+
+  if (!match) {
+    daysLabel.textContent = "Geçersiz tarih";
+    dateLabel.textContent = "Lütfen tarihi yeniden seç";
+    return;
+  }
+
+  const [, y, m, d] = match;
+  const selected = new Date(Date.UTC(+y, +m - 1, +d));
+
+  if (
+    selected.getUTCFullYear() !== +y ||
+    selected.getUTCMonth() !== +m - 1 ||
+    selected.getUTCDate() !== +d
+  ) {
+    daysLabel.textContent = "Geçersiz tarih";
+    dateLabel.textContent = "Lütfen tarihi yeniden seç";
+    return;
+  }
+
+  const now = new Date();
+  const today = Date.UTC(
+    now.getFullYear(), now.getMonth(), now.getDate()
+  );
+
+  const difference = Math.round(
+    (selected.getTime() - today) / 86400000
+  );
+
+  dateLabel.textContent = selected.toLocaleDateString("tr-TR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC"
+  });
+
+  if (difference < 0) {
+    daysLabel.textContent = "Tarih geçti";
+  } else if (difference === 0) {
+    daysLabel.textContent = "Bugün!";
+  } else {
+    daysLabel.textContent = `${difference} gün`;
+  }
+}
+
+["TYT", "AYT"].forEach(exam => {
+  const input = $(`${exam.toLowerCase()}DateInput`);
+
+  input.addEventListener("change", () => {
+    if (input.value) {
+      examDates[exam] = input.value;
+    } else {
+      delete examDates[exam];
+    }
+
+    localStorage.setItem(
+      EXAM_DATES_KEY,
+      JSON.stringify(examDates)
+    );
+
+    renderCountdown(exam);
+  });
+
+  renderCountdown(exam);
+});
+
+
 
 const dateText = new Intl.DateTimeFormat("tr-TR", {
   weekday: "long", day: "numeric", month: "long"
