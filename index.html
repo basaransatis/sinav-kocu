@@ -6,6 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#6750d8">
   <meta name="description" content="TYT ve AYT çalışma planını, konularını ve odak süreni takip et.">
+  
+<section class="section">
+  <div class="section-heading">
+    <h2>Odaklanma zamanı</h2>
+    <span class="tag">SENİN TEMPO'N</span>
+  </div>
+
+  <article class="card timer-card">
+    <p class="muted">Çalışma süreni kendin belirle.</p>
+
+    <div class="duration-settings">
+      <label for="durationHours">Saat</label>
+      <input id="durationHours" type="number" min="0"
+        max="24" value="0" inputmode="numeric">
+
+      <label for="durationMinutes">Dakika</label>
+      <input id="durationMinutes" type="number" min="0"
+        max="59" value="25" inputmode="numeric">
+    </div>
+
+    <div class="presets">
+      <button class="secondary-btn preset" data-minutes="25">25 dk</button>
+      <button class="secondary-btn preset" data-minutes="50">50 dk</button>
+      <button class="secondary-btn preset" data-minutes="90">90 dk</button>
+      <button class="secondary-btn preset" data-minutes="120">2 saat</button>
+    </div>
+
+    <button id="setDuration" class="secondary-btn">Süreyi ayarla</button>
+
+    <div id="timer" class="timer">25:00</div>
+
+    <div class="timer-controls">
+      <button id="startTimer" class="primary-btn">Başlat</button>
+      <button id="resetTimer" class="secondary-btn">Sıfırla</button>
+    </div>
+
+    <small id="timerStatus" class="muted">25 dakika çalışma</small>
+  </article>
+</section>
+
   <title>Sınav Koçu</title>
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
