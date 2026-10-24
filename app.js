@@ -395,3 +395,34 @@ if ("serviceWorker" in navigator) {
     });
   });
 }
+(function () {
+  function updateExamCountdown(id, year, month, day) {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    const target = new Date(year, month - 1, day, 0, 0, 0);
+    const diff = target.getTime() - Date.now();
+
+    if (diff <= 0) {
+      el.textContent = "Sınav günü!";
+      return;
+    }
+
+    const total = Math.floor(diff / 1000);
+    const days = Math.floor(total / 86400);
+    const hours = Math.floor((total % 86400) / 3600);
+    const minutes = Math.floor((total % 3600) / 60);
+    const seconds = total % 60;
+
+    el.textContent =
+      `${days} gün ${hours} saat ${minutes} dakika ${seconds} saniye`;
+  }
+
+  function updateAll() {
+    updateExamCountdown("tytDays", 2027, 6, 19);
+    updateExamCountdown("aytDays", 2027, 6, 20);
+  }
+
+  updateAll();
+  setInterval(updateAll, 1000);
+})();
